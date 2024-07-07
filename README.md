@@ -9,9 +9,9 @@ but uses different tables for Command / Query.
 Read Model updates are processed by the Read Model Update Actor using Event Sourcing replay etc.
 
 CommandとQueryの2つのパターンで実装しています。  
-MySQLを使って永続化していますが、  
-Command / Queryで異なるテーブルを利用しています。  
-Read Model更新アクターが処理しています。
+MySQLを使って永続化しています
+
+Read Model更新アクターがQuery用に加工処理しています。
 
 ### Command
 
