@@ -62,7 +62,6 @@ class UserActor implements ActorInterface, PersistentInterface
                 ]);
                 $this->persist($ev, $context);
                 $context->send($msg->ref, new UserCreateResponse($id));
-                $context->send($this->readModelUpdater, $ev);
                 $context->stop($context->self());
                 break;
             case $msg instanceof Message:
