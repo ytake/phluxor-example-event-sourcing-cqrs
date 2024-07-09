@@ -60,7 +60,7 @@ class UserActor implements ActorInterface, PersistentInterface
                     'userName' => $msg->userName,
                     'version' => $this->version++,
                 ]);
-                $this->persist($ev);
+                $this->persist($ev, $context);
                 $context->send($msg->ref, new UserCreateResponse($id));
                 $context->send($this->readModelUpdater, $ev);
                 $context->stop($context->self());
@@ -68,10 +68,7 @@ class UserActor implements ActorInterface, PersistentInterface
             case $msg instanceof Message:
                 // event がリプレイされた場合は状態を更新する
                 if ($msg->serializeToJsonString() != '') {
-                    if ($msg instanceof UserCreated) {
-                        // 状態を復元します
-                        $this->state = $msg;
-                    }
+                    $this->persist($msg, $context);
                 }
                 break;
             default:
@@ -86,13 +83,14 @@ class UserActor implements ActorInterface, PersistentInterface
         return $this->state->getEmail() == $email;
     }
 
-    private function persist(Message $msg): void
+    private function persist(Message $msg, ContextInterface $context): void
     {
         if (!$this->recovering()) {
             $this->persistenceReceive($msg);
         }
         if ($msg instanceof UserCreated) {
             $this->state = $msg;
+            $context->send($this->readModelUpdater, $msg);
         }
     }
 }
