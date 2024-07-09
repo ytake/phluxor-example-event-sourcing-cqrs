@@ -63,6 +63,7 @@ class UserActor implements ActorInterface, PersistentInterface
                 $this->persist($ev);
                 $context->send($msg->ref, new UserCreateResponse($id));
                 $context->send($this->readModelUpdater, $ev);
+                $context->stop($context->self());
                 break;
             case $msg instanceof Message:
                 // event がリプレイされた場合は状態を更新する

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\ActorSystem;
 
-use App\Database\MysqlConnection;
 use Closure;
 use Laminas\ServiceManager\ServiceManager;
 use Mezzio\Swoole\Event\WorkerStartEvent;

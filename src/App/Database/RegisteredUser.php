@@ -21,13 +21,6 @@ readonly class RegisteredUser
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function findAll(): mixed
-    {
-        $stmt = $this->proxy->prepare('SELECT id, name, email, created_at FROM users ORDER BY created_at DESC');
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
     public function addUser(string $id, string $name, string $email): mixed
     {
         $this->proxy->beginTransaction();
